@@ -31,8 +31,8 @@ Uma interface web onde o colaborador conversa com uma IA que conhece seu saldo, 
 ## Como rodar localmente
 
 ```bash
-git clone https://github.com/SEU_USUARIO/azulzinho-copilot
-cd azulzinho-copilot
+git clone https://github.com/JulioFlavio/onfly-apresentacao
+cd onfly-apresentacao
 npm install
 cp .env.example .env
 # Adicione sua VITE_ANTHROPIC_API_KEY no .env
