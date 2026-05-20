@@ -1,0 +1,39 @@
+/* src/index.css
+   Folha de estilos global do app. As tres diretivas abaixo sao expandidas
+   pelo PostCSS em tempo de build/dev em todo o CSS gerado pelo Tailwind. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base do tema dark - aplicada via @layer base para nao competir em
+   especificidade com utilitarios do Tailwind escritos depois.            */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: #0D1117; /* dark   - fundo padrao da aplicacao */
+    color: #E6EDF3;            /* text-main - texto principal       */
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Animação de entrada para balões de mensagem do chat.
+   Aplicada via style={{ animation }} inline em cada balão — dispara uma
+   única vez no mount do elemento (React não re-monta itens com key estável,
+   então mensagens já existentes não re-animam quando o array cresce). */
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

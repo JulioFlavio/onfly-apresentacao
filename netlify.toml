@@ -1,0 +1,44 @@
+# netlify.toml
+# Arquivo de configuracao da Netlify - lido em cada deploy.
+# Aqui declaramos como buildar o projeto, como servir as rotas do SPA
+# e como rotear as chamadas a /api/anthropic para a Edge Function.
+
+# ---------------------------------------------------------------------------
+# Build
+# ---------------------------------------------------------------------------
+# command: roda na maquina de build da Netlify. "npm run build" executa o
+#   script definido no package.json (tsc && vite build), o que garante
+#   type-check antes de empacotar.
+# publish: pasta com os artefatos estaticos finais que a Netlify vai servir
+#   pela CDN. O Vite emite o bundle em "dist" por padrao.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# ---------------------------------------------------------------------------
+# SPA fallback
+# ---------------------------------------------------------------------------
+# React Router faz roteamento client-side: a URL muda mas o servidor nunca
+# v� a rota /chat ou /transacoes diretamente. Sem este redirect, ao recarregar
+# uma rota interna a Netlify retornaria 404 (porque nao existe um
+# /chat/index.html no build). O fallback 200 para /index.html diz pra
+# CDN entregar o bundle do React e deixar o router resolver a rota no browser.
+#
+# IMPORTANTE: a Netlify aplica redirects DEPOIS de avaliar edge functions,
+# entao /api/anthropic/v1/messages e capturada pela edge function (definida
+# abaixo) antes deste catch-all entrar em acao.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ---------------------------------------------------------------------------
+# Edge Function: proxy para Anthropic
+# ---------------------------------------------------------------------------
+# Roteia /api/anthropic/v1/messages para netlify/edge-functions/anthropic.ts.
+# A funcao injeta a x-api-key server-side (lida de ANTHROPIC_API_KEY no
+# painel da Netlify) e repassa para api.anthropic.com - mesmo papel do
+# proxy do Vite em dev, agora rodando na borda em producao.
+[[edge_functions]]
+  path = "/api/anthropic/v1/messages"
+  function = "anthropic"
