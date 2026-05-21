@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
   // variavel local — equivale a "ler de process.env" depois que essa
   // variavel for populada.
   const env = loadEnv(mode, process.cwd(), '')
-  const apiKey = env.VITE_ANTHROPIC_API_KEY ?? ''
+  const apiKey = env.ANTHROPIC_API_KEY ?? ''
 
   return {
     plugins: [react()],
@@ -58,7 +58,6 @@ export default defineConfig(({ mode }) => {
               proxyReq.setHeader('x-api-key', apiKey)
               proxyReq.setHeader('anthropic-version', '2023-06-01')
               proxyReq.setHeader('content-type', 'application/json')
-              proxyReq.setHeader('anthropic-dangerous-direct-browser-access', 'true')
             })
           },
         },

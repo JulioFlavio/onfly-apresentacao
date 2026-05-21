@@ -1,9 +1,11 @@
 /// <reference types="vite/client" />
 
-// Tipa as variaveis de ambiente acessiveis via import.meta.env.
-// Toda env exposta ao front pelo Vite precisa do prefixo VITE_.
+// Variaveis de ambiente acessiveis via import.meta.env no frontend.
+// NAO declare ANTHROPIC_API_KEY aqui — ela nao tem prefixo VITE_ e
+// portanto nao e injetada no bundle. A chave fica exclusivamente no
+// servidor (proxy do Vite em dev, Edge Function em producao).
 interface ImportMetaEnv {
-  readonly VITE_ANTHROPIC_API_KEY: string
+  // adicione aqui apenas variaveis seguras para o browser (prefixo VITE_)
 }
 
 interface ImportMeta {
